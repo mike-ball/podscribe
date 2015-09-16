@@ -36,6 +36,7 @@ group :development do
   gem 'awesome_print'
   gem 'capistrano'
   gem 'rvm-capistrano',  require: false
+  gem "capistrano-sidekiq", require: false
 end
 
 group :development, :test do

@@ -2,7 +2,7 @@
 require 'puma/capistrano'
 require 'rvm/capistrano'
 require 'bundler/capistrano'
-require 'sidekiq/capistrano'
+require 'capistrano/sidekiq'
 # require "coalmine/capistrano" # notify Coalmine there is a deployment
 
 server "l1.snoogen.com", :web, :app, :db, primary: true
