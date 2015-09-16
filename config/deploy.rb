@@ -13,6 +13,9 @@ set :deploy_to, "/home/#{user}/apps/#{application}"
 set :deploy_via, :remote_cache
 set :use_sudo, false
 
+set :rvm_ruby_string, '2.2.3'
+set :rvm_type, :user  # Don't use system-wide RVM
+
 set :scm, :git
 set :repository, "git@github.com:mike-ball/podscribe.git"
 # set :scm_user, "mike-ball"
