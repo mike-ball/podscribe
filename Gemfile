@@ -34,6 +34,8 @@ group :development do
   gem 'rb-inotify', :require=>false
   gem 'spring-commands-rspec'
   gem 'awesome_print'
+  gem 'capistrano'
+  gem 'rvm-capistrano',  require: false
 end
 
 group :development, :test do
