@@ -13,14 +13,18 @@ gem 'bootstrap-sass'
 gem 'high_voltage'
 gem 'omniauth'
 gem 'omniauth-twitter'
+# gem 'omniauth-linkedin'
 gem 'pg'
 gem 'puma'
 gem 'pundit'
+gem 'sidekiq'
+gem 'sidekiq-status'
+gem 'sinatra', require: false # used by Sidekiq monitor web view
 gem 'simple_form'
+gem 'itunes-search-api'
 
 group :development do
   gem 'better_errors'
-  gem 'foreman'
   gem 'guard-bundler'
   gem 'guard-rails'
   gem 'guard-rspec'
@@ -29,17 +33,18 @@ group :development do
   gem 'rb-fsevent', :require=>false
   gem 'rb-inotify', :require=>false
   gem 'spring-commands-rspec'
+  gem 'awesome_print'
 end
 
 group :development, :test do
   gem 'byebug'
   gem 'web-console', '~> 2.0'
   gem 'spring'
-
+  gem 'dotenv-rails'
   gem 'factory_girl_rails'
   gem 'faker'
-  gem 'pry-rails'
-  gem 'pry-rescue'
+  # gem 'pry-rails'
+  # gem 'pry-rescue'
   gem 'rspec-rails'
   gem 'rubocop'
 end

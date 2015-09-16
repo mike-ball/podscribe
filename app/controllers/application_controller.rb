@@ -3,6 +3,8 @@ class ApplicationController < ActionController::Base
   # For APIs, you may want to use :null_session instead.
   protect_from_forgery with: :exception
 
+  before_action :check_sidekiq_in_dev
+
   helper_method :current_user
   helper_method :user_signed_in?
   helper_method :correct_user?
@@ -30,6 +32,15 @@ class ApplicationController < ActionController::Base
     def authenticate_user!
       if !current_user
         redirect_to root_url, :alert => 'You need to sign in for access to this page.'
+      end
+    end
+
+    def check_sidekiq_in_dev
+      if Rails.env.development?
+        require 'sidekiq/api'
+        unless Sidekiq::ProcessSet.new.any?
+          flash.now[:danger] = "Sidekiq is not running!"
+        end
       end
     end
 

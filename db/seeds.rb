@@ -6,3 +6,7 @@
 #   cities = City.create([{ name: 'Chicago' }, { name: 'Copenhagen' }])
 #   Mayor.create(name: 'Emanuel', city: cities.first)
 # Environment variables (ENV['...']) can be set in the file .env file.
+
+atp = Podcast.create(name: "Accidental Tech Podcast", url: "http://atp.fm", rss_feed: "http://atp.fm/episodes?format=rss")
+
+atp.episodes.create(name: "Finding Your Way Back In", number: 131, url: "http://atp.fm/episodes/131", file: "http://traffic.libsyn.com/atpfm/atp131.mp3")

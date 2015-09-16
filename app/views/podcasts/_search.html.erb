@@ -1,0 +1,79 @@
+<div class="row">
+  <div class="text-center">
+    <div class="jumbotron green-bg">
+      <form id="search_itunes" class="form-inline">
+        <div class="form-group">
+          <input type="text" class="form-control" id="search_term" placeholder="Enter a podcast Name" size="70">
+        </div>
+        <div class="form-group">
+          <select class="form-control" id="search_country">
+            <option value="US">United States</option>
+            <option value="CA">Canadia</option>
+          </select>
+        </div>
+        <br /><br />
+        <button type="submit" class="btn btn-warning btn-lg">Search iTunes!</button>
+        <div id="search_error"></div>
+      </form>
+    </div>
+  </div>
+</div>
+
+
+<div id="search_results" class="row hide">
+  <div class="col-md-12">
+    <h4>Found <span id="result_count"></span> podcasts</h4>
+  </div>
+  <div id="search_results_row" class="col-lg-12">
+    <div class="item-episode hide">
+      <img src="" />
+      <div class="info">
+        <a class="btn btn-block" href="">Set This Feed</a>
+      </div>
+      <div class="title">
+        <h4><a href="">Accidental Tech Podcast</a></h4>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<script>
+  $(function() {
+    $('#search_itunes').on('submit', function(e) {
+      e.preventDefault();
+      var search_term = $('#search_term').val();
+      var country     = $('#search_country').val();
+      var media       = 'podcast';
+      if (search_term != '') {
+        $('#search_error').html('');
+        $.ajax({
+          url: "https://itunes.apple.com/search",
+          data: { term: search_term, country: country, media: media },
+          dataType: 'JSONP'
+          })
+          .done(function(data) {
+            $('#search_results').removeClass('hide');
+            $('#result_count').html(data.resultCount);
+            $.each(data.results, function(index, item) {
+              $div = $('.item-episode.hide').clone().removeClass('hide');
+              $div.children('img').attr('src', item.artworkUrl60);
+              $div.appendTo('#search_results_row');
+              // console.log('collectionId: ' + item.collectionId);
+              // console.log('artistName: ' + item.artistName);
+              // console.log('collectionCensoredName: ' + item.collectionCensoredName);
+              // console.log('feedUrl: ' + item.feedUrl);
+              // console.log('artworkUrl30: ' + item.artworkUrl30);
+              // console.log('primaryGenreName: ' + item.primaryGenreName);
+            });
+          })
+          .fail(function(data) {
+            console.log(data);
+          })
+      } else {
+        $('#search_results').addClass('hide');
+        $('#search_error').html("Please enter something to search for");
+      }
+    });
+  });
+</script>

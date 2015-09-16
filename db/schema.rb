@@ -11,10 +11,47 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150821223601) do
+ActiveRecord::Schema.define(version: 20150824222326) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "episodes", force: :cascade do |t|
+    t.integer  "podcast_id"
+    t.string   "name"
+    t.integer  "number"
+    t.string   "url"
+    t.string   "file"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  add_index "episodes", ["podcast_id"], name: "index_episodes_on_podcast_id", using: :btree
+
+  create_table "podcasts", force: :cascade do |t|
+    t.string   "name"
+    t.string   "url"
+    t.string   "rss_feed"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  add_index "podcasts", ["name"], name: "index_podcasts_on_name", using: :btree
+
+  create_table "settings", force: :cascade do |t|
+    t.integer  "play_time"
+    t.integer  "pause_time"
+    t.integer  "rewind_time"
+    t.integer  "user_id"
+    t.integer  "podcast_id"
+    t.integer  "episode_id"
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
+  end
+
+  add_index "settings", ["episode_id"], name: "index_settings_on_episode_id", using: :btree
+  add_index "settings", ["podcast_id"], name: "index_settings_on_podcast_id", using: :btree
+  add_index "settings", ["user_id"], name: "index_settings_on_user_id", using: :btree
 
   create_table "users", force: :cascade do |t|
     t.string   "name"
@@ -25,4 +62,8 @@ ActiveRecord::Schema.define(version: 20150821223601) do
     t.integer  "role"
   end
 
+  add_foreign_key "episodes", "podcasts"
+  add_foreign_key "settings", "episodes"
+  add_foreign_key "settings", "podcasts"
+  add_foreign_key "settings", "users"
 end

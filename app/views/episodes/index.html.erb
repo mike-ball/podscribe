@@ -1,0 +1,28 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Listing Episodes</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Podcast</th>
+      <th colspan="2"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @episodes.each do |episode| %>
+      <tr>
+        <td><%= link_to episode.name, [@podcast, episode] %></td>
+        <td><%= link_to episode.podcast.name, episode.podcast %></td>
+        <td><%= link_to 'Edit', edit_podcast_episode_path(@podcast, episode) %></td>
+        <td><%= link_to 'Destroy', [@podcast, episode], method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Episode', new_podcast_episode_path(@podcast) %>

@@ -1,0 +1,113 @@
+<% content_for :title do %>Episode<% end %>
+
+<div class="row">
+  <div class="text-center">
+    <h3><%= @episode.podcast.name %> - <%= @episode.name %></h3>
+    <div>
+      <audio class="hide" id="audioPlayer" controls preload="none" style="width: 400px;">
+        <!-- <source src="track.ogg" type="audio/ogg" /> -->
+        <source src="http://traffic.libsyn.com/atpfm/atp131.mp3" type="audio/mpeg" />
+        Your browser does not support the audio element.
+      </audio>
+    </div>
+
+    <div>
+      <%= simple_form_for @setting, url: '', as: 'setting',
+        wrapper: :inline_form,
+        html: { class: 'form-inline' } do |f| %>
+        <%#= f.error_notification %>
+        <% html_attrs = {style: "width: 50px;", maxlength: 2} %>
+        Play for
+        <%= f.input :play_time, input_html: html_attrs %> seconds,
+        pause for
+        <%= f.input :pause_time, input_html: html_attrs %> seconds,
+        rewind for
+        <%= f.input :rewind_time, input_html: html_attrs %> seconds.
+
+        <%#= f.button :submit %>
+      <% end %>
+    </div>
+
+    <div>
+      <button type="button" class="btn btn-default" id="playPauseButton">
+        <span class="glyphicon glyphicon-play" aria-hidden="true"></span>
+      </button>
+    </div>
+  </div>
+</div>
+
+
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Name:</strong>
+  <%= @episode.name %>
+</p>
+
+<p>
+  <strong>Podcast:</strong>
+  <%= link_to @episode.podcast.name, @episode.podcast %>
+</p>
+
+<%= link_to 'Edit', edit_podcast_episode_path(@podcast, @episode) %> |
+<%= link_to 'Back', podcast_episodes_path(@podcast) %>
+
+
+<script>
+  $(document).on("page:change", function() {
+    var audio = $('#audioPlayer');
+    audio.bind('load', function() {
+      // alert("loaded");
+      // audio.play;
+
+    }).bind('durationchange', function() {
+      // alert("Duration: " + audio.prop('duration'));
+    }).bind('playing', function() {
+      // audio has started playing. Either for the first time, or after being paused.
+      switchPlayPauseIcon('pause');
+    }).bind('pause', function() {
+      // audio has been paused
+      switchPlayPauseIcon('play');
+    }).bind('play', function() {
+      // playing starts after being paused
+    }).bind('ended', function() {
+      // playback has completed
+    }).bind('error', function(e) {
+      // console.log(e);
+    });
+
+    audio.trigger('load');
+
+    $('#playPauseButton').on('click', function() {
+      playPause(audio);
+    });
+
+    function switchPlayPauseIcon(new_status) {
+      old_status = (new_status == 'play' ? 'pause' : 'play');
+      // $('#playPauseButton span').switchClass("glyphicon-"+old_status, "glyphicon-"+new_status);
+      $('#playPauseButton span').removeClass("glyphicon-"+old_status).addClass("glyphicon-"+new_status);
+    }
+
+    // Toggles between playing and paused
+    function playPause(player) {
+      playerDom = player[0]
+      action = (playerDom.paused ? 'play' : 'pause');
+      player.trigger(action);
+    }
+
+    $(document).on("keypress", function(e) {
+      // console.log(e.keyCode);
+      if (e.keyCode == 112) {
+        // console.log("p pressed");
+        // console.log('p'.charCodeAt(0));
+      }
+      if (e.metaKey) {
+        // console.log("meta");
+      }
+      if(e.metaKey && e.keyCode == 'p'.charCodeAt(0)){
+        e.preventDefault();
+        playPause(audio);
+      }
+    });
+  });
+</script>
